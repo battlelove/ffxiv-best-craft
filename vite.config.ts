@@ -52,6 +52,7 @@ const defineTarget = (): PluginOption => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: './',
     plugins: [
         defineTarget(),
         wasm(),
