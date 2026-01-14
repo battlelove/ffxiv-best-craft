@@ -11,8 +11,17 @@ interface InventoryItem {
 }
 
 // Custom serializer for Map persistence
+// Custom serializer for Map persistence
 const mapSerializer = {
-    read: (v: string) => new Map(JSON.parse(v)),
+    read: (v: string) => {
+        try {
+            const parsed = JSON.parse(v);
+            return new Map(parsed);
+        } catch (e) {
+            console.warn('Failed to parse inventory storage, resetting.', e);
+            return new Map();
+        }
+    },
     write: (v: Map<number, number>) => JSON.stringify(Array.from(v.entries())),
 };
 
