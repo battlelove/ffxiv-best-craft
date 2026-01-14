@@ -54,7 +54,6 @@ const { $t } = useFluent();
 const colorMode = useColorMode();
 const settingsStore = useSettingsStore();
 const gearsetsStore = useGearsetsStore();
-const gearsetsStore = useGearsetsStore();
 const designerStore = useDesignerStore();
 const inventoryStore = useInventoryStore();
 const preferredLang = usePreferredLanguages();
