@@ -44,7 +44,10 @@ const { $t } = useFluent();
 onActivated(() => emit('setTitle', designerStore.content?.item.name ?? ''));
 
 const Designer = defineAsyncComponent(() => import('./Designer.vue'));
+const Designer = defineAsyncComponent(() => import('./Designer.vue'));
 const Simulator = defineAsyncComponent(() => import('./Simulator.vue'));
+const MarketAdvice = defineAsyncComponent(() => import('./MarketAdvice.vue'));
+
 
 const isCustomRecipe = computed(() => designerStore.content?.job === undefined);
 const attributes = computed(() => {
@@ -99,6 +102,11 @@ function reload() {
             </template>
         </el-result>
         <template v-else-if="designerStore.content != null">
+            <MarketAdvice 
+                :itemId="designerStore.content.item.id" 
+                :recipeId="designerStore.content.recipeId ?? 0"
+                v-if="designerStore.content.recipeId"
+            />
             <Designer
                 v-if="!designerStore.content.simulatorMode"
                 :item="designerStore.content.item"

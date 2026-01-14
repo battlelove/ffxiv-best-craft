@@ -25,6 +25,8 @@ const CustomizeRecipe = () =>
 const DesignerVue = () => import('./components/designer/Page.vue');
 const BOMVue = () => import('./pages/Bom.vue');
 const SettingsVue = () => import('./pages/Settings.vue');
+const ProfitCalculator = () => import('./pages/ProfitCalculator.vue');
+
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -40,7 +42,9 @@ const router = createRouter({
         },
         { path: '/designer', name: 'designer', component: DesignerVue },
         { path: '/bom', name: 'bom', component: BOMVue },
+        { path: '/profit', name: 'profit', component: ProfitCalculator },
         { path: '/settings', name: 'settings', component: SettingsVue },
+
     ],
 });
 
