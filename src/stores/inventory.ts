@@ -10,11 +10,27 @@ interface InventoryItem {
     // For simplicity, let's keep it minimal.
 }
 
+// Custom serializer for Map persistence
+const mapSerializer = {
+    read: (v: string) => new Map(JSON.parse(v)),
+    write: (v: Map<number, number>) => JSON.stringify(Array.from(v.entries())),
+};
+
 export const useInventoryStore = defineStore('inventory', () => {
-    // Persist to local storage
-    const items = useStorage<Map<number, number>>('inventory-items', new Map());
+    // Persist to local storage with custom serializer
+    const items = useStorage<Map<number, number>>(
+        'inventory-items',
+        new Map(),
+        localStorage,
+        { serializer: mapSerializer }
+    );
 
     const itemList = computed(() => {
+        // Ensure items.value is a Map (in case of storage errors)
+        if (!(items.value instanceof Map)) {
+            // Fallback for corrupted storage
+            return [];
+        }
         return Array.from(items.value.entries()).map(([id, amount]) => ({
             id,
             amount
