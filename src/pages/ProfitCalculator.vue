@@ -179,6 +179,19 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { 
+    ElInput, 
+    ElButton, 
+    ElSelect, 
+    ElOption, 
+    ElTable, 
+    ElTableColumn, 
+    ElInputNumber, 
+    ElTooltip, 
+    ElIcon, 
+    ElCheckbox,
+    ElTag 
+} from 'element-plus';
 import { Edit } from '@element-plus/icons-vue';
 import { useFluent } from 'fluent-vue';
 import useSettingsStore from '@/stores/settings';
