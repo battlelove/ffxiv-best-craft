@@ -7,7 +7,7 @@
                 style="width: 200px; margin-right: 10px"
                 @keyup.enter="handleSearch"
             />
-            <el-button type="primary" @click="handleSearch" :loading="searching">{{ $t('search') }}</el-button>
+            <el-button type="primary" @click="openItemSelector" :loading="searching">{{ $t('search') }}</el-button>
             
             <div class="world-selector">
                 <span>{{ $t('server') }}: </span>
@@ -22,63 +22,8 @@
                     <el-option label="Bahamut (巴哈姆特)" value="4033" />
                     <el-option label="Ramuh (拉姆)" value="4034" />
                     <el-option label="Titan (泰坦)" value="4035" />
-                    <!-- CN Servers: 
-                        LuXingNiao (Chocobo DC):
-                        HongYuHai (Ruby Sea)
-                        ShenYiZhiDi (God's Reach?) -> No, standard names are:
-                        Lageng (Raggan?)
-                        
-                        Valid CN Chocobo servers mapped to Universalis names:
-                        Universalis uses standard names usually.
-                        Let's stick to user request: "Garuda" is "迦樓羅".
-                        "Chocobo" is likely the DC.
-                        
-                        Ref: https://universalis.app/docs/index.html#chinese-servers
-                        CN servers need pinyin or Hanzi? Universalis usually takes English/Romaji names or IDs.
-                        Garuda (CN) is 'Garuda'? Wait, Garuda is JP Element.
-                        CN 'Garuda' might not exist or is mapped differently?
-                        
-                        Actually, "迦樓羅" is typically "Garuda" in JP/Global.
-                        But the user explicitly said "World 迦樓羅" and context implied CN.
-                        Maybe they play on JP server?
-                        "只需要繁中服 其他都不需要" -> "Only Traditional Chinese server". 
-                        Wait, FF14 has "Korean" and "Chinese" specifically. 
-                        "繁中服" (Traditional Chinese) usually refers to the **Global Server with Traditional Chinese Mod** or a specific unofficial server? 
-                        OR maybe "陸行鳥" refers to the Chinese DC "LuXingNiao".
-                        
-                        Let's verify "Garuda" (迦樓羅) in CN context.
-                        In CN server, "LuXingNiao" (Chocobo) DC has:
-                        HongYuHai, ShenYiZhiDi, LaNuoXiYa (La Noscea), HuanYingQunDao (Phantom Isles), MengYaChi (Germonique), YuZhouHeYin (Cosmos), WoXianXiRan (Raiden), ChenXiWangZuo (Alpha).
-                        
-                        "Garuda" is NOT in CN Chocobo DC.
-                        "Garuda" is in JP Elemental DC.
-                        
-                        However, the user said: "世界 迦樓羅" (World Garuda).
-                        And "只需要繁中服" (Only Need Trad-CN Server).
-                        
-                        Contradiction/Ambiguity:
-                        1. User plays on JP Garuda (Element), but calls it "繁中服" (maybe using patches?).
-                        2. User plays on CN server, but gave "Garuda" as an example? Rare.
-                        3. There is a private server?
-                        
-                        Logic: Universalis supports Global (JP/NA/EU/OC) and CN.
-                        If user says "Garuda", I should assume the standard "Garuda" from Universalis (which is JP).
-                        But user also said "Chocobo Data Center".
-                        "Chocobo" IS a DC in CN.
-                        BUT "Garuda" is NOT in "Chocobo" DC.
-                        
-                        HYPOTHESIS: User meant "Manually select server like Garuda".
-                        Maybe they meant "Chocobo" as in "The Bird" (Universal symbol) or they are indeed on CN Chocobo.
-                        
-                        Wait, "陸行鳥" is strictly CN DC.
-                        If user selects "Chocobo", they likely mean CN.
-                        If they select "Garuda", they likely mean JP.
-                        
-                        I will allow typing/selecting.
-                        I will give a text input or a combobox.
-                     -->
-                     <el-option label="Garuda" value="Garuda" />
-                     <el-option label="Chocobo (CN DC)" value="Chocobo" />
+                    <el-option label="Garuda" value="Garuda" />
+                    <el-option label="Chocobo (CN DC)" value="Chocobo" />
                 </el-select>
             </div>
             
@@ -178,6 +123,12 @@
         <div v-else class="empty-state">
             {{ $t('please-search-item') }}
         </div>
+
+        <ItemSelector 
+            v-model="showItemSelector" 
+            :initial-query="itemName"
+            @select="handleItemSelect"
+        />
     </div>
 </template>
 
@@ -203,6 +154,7 @@ import useSettingsStore from '@/stores/settings';
 import useCostStore from '@/stores/cost';
 import useBomStore from '@/stores/bom'; // Reuse some BOM logic finding recipes?
 import PriceTrendMini from '@/components/price/PriceTrend.vue';
+import ItemSelector from '@/components/ItemSelector.vue';
 
 const { $t } = useFluent();
 const costStore = useCostStore();
@@ -211,6 +163,8 @@ const bomStore = useBomStore();
 
 const itemName = ref('');
 const searching = ref(false); // Add searching state
+const showItemSelector = ref(false);
+
 const selectedWorld = computed({
     get: () => costStore.selectedWorld,
     set: (v) => costStore.setWorld(v)
@@ -265,30 +219,22 @@ const profit = computed(() => {
     return (marketPrice.value * 0.95) - craftingCost.value;
 });
 
+function openItemSelector() {
+    showItemSelector.value = true;
+}
 
+// Previously handleSearch... now replaced by handleItemSelect logic
 async function handleSearch() {
-    if (!itemName.value) return;
-    
+    // Alias for Enter key on input to open selector
+    openItemSelector();
+}
+
+async function handleItemSelect(item: { id: number; name: string; recipeId: number }) {
+    targetItem.value = { id: item.id, name: item.name };
     searching.value = true;
     try {
-        // 1. Search Item ID
-        const ds = await settingsStore.getDataSource();
-        const result = await ds.recipeTable(1, itemName.value);
-        
-        if (result.results.length > 0) {
-            // Pick first match? Or show dialog?
-            // For simplicity, pick first.
-            const r = result.results[0];
-            targetItem.value = { id: r.item_id, name: r.name }; // Wait, r.name might be recipe name?
-            
-            // 2. Build Tree
-            await buildComponentTree(r.item_id, r.id);
-            
-            // 3. Fetch Prices
-            await refreshPrices();
-        } else {
-            ElMessage.warning($t('no-result-found'));
-        }
+        await buildComponentTree(item.id, item.recipeId);
+        await refreshPrices();
     } catch (e) {
         ElMessage.error($t('search-error') + ': ' + String(e));
     } finally {
