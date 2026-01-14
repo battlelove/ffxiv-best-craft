@@ -52,7 +52,7 @@ const defineTarget = (): PluginOption => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: './',
+    base: '/ffxiv-best-craft/',
     plugins: [
         defineTarget(),
         wasm(),
