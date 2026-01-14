@@ -1,2 +1,0 @@
-onmessage=async a=>{var{rand_simulation:e,rand_collectables_simulation:t,calc_attributes_scope:o}=await import("./app_wasm-DNCI8u3l.js");const{name:r,args:c}=a.data,s=JSON.parse(c);try{switch(r){case"rand_simulation":postMessage(e(s.status,s.actions,s.n,s.ignoreErrors));break;case"rand_collectables_simulation":postMessage(t(s.status,s.actions,s.n,s.ignoreErrors,s.collectablesShopRefine));case"calc_attributes_scope":postMessage(o(s.status,s.actions))}}catch(n){postMessage({error:String(n)})}close()};
-//# sourceMappingURL=AnalyzerWorker-Dc4rjPHC.js.map
