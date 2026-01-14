@@ -44,7 +44,7 @@ const { $t } = useFluent();
 onActivated(() => emit('setTitle', designerStore.content?.item.name ?? ''));
 
 const Designer = defineAsyncComponent(() => import('./Designer.vue'));
-const Designer = defineAsyncComponent(() => import('./Designer.vue'));
+
 const Simulator = defineAsyncComponent(() => import('./Simulator.vue'));
 const MarketAdvice = defineAsyncComponent(() => import('./MarketAdvice.vue'));
 
