@@ -125,7 +125,7 @@ async function fetchResults() {
         const res = await ds.recipeTable(currentPage.value, searchQuery.value);
         results.value = res.results.map(r => ({
             ...r,
-            // Add derived fields if necessary
+            name: r.item_name, // Map item_name to name for display and selection
         }));
         total.value = res.totalPages * 10; // Estimation if total items count is unknown, but totalPages is known.
         // Wait, RecipeSourceResult has `totalPages` but maybe not `totalCount`.
