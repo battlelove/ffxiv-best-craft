@@ -7,17 +7,21 @@
                 style="width: 200px; margin-right: 10px"
                 @keyup.enter="handleSearch"
             />
-            <el-button type="primary" @click="handleSearch">{{ $t('search') }}</el-button>
+            <el-button type="primary" @click="handleSearch" :loading="searching">{{ $t('search') }}</el-button>
             
             <div class="world-selector">
                 <span>{{ $t('server') }}: </span>
                 <el-select v-model="selectedWorld" style="width: 150px" @change="handleWorldChange">
                     <el-option label="Chocobo (DC)" value="Chocobo" />
-                    <!-- Add specific servers manually or fetch? For now hardcode typical Chocobo servers -->
-                    <el-option label="Garuda (迦樓羅)" value="Garuda" />
-                    <el-option label="Asura (阿修羅)" value="Asura" />
-                    <el-option label="Belias (貝利亞斯)" value="Belias" />
-                    <el-option label="Chocobo (拉諾西亞)" value="Chocobo" /> <!-- Wait, Chocobo is the DC, but also a server? No, server is Ravana/Sephirot etc in Materia, but for CN: -->
+                    <!-- Traditional Chinese Servers (Universalis IDs) -->
+                    <el-option label="Ifrit (伊弗利特)" value="4028" />
+                    <el-option label="Garuda (迦樓羅)" value="4029" />
+                    <el-option label="Leviathan (利維坦)" value="4030" />
+                    <el-option label="Phoenix (鳳凰)" value="4031" />
+                    <el-option label="Odin (奧汀)" value="4032" />
+                    <el-option label="Bahamut (巴哈姆特)" value="4033" />
+                    <el-option label="Ramuh (拉姆)" value="4034" />
+                    <el-option label="Titan (泰坦)" value="4035" />
                     <!-- CN Servers: 
                         LuXingNiao (Chocobo DC):
                         HongYuHai (Ruby Sea)
@@ -190,7 +194,8 @@ import {
     ElTooltip, 
     ElIcon, 
     ElCheckbox,
-    ElTag 
+    ElTag,
+    ElMessage
 } from 'element-plus';
 import { Edit } from '@element-plus/icons-vue';
 import { useFluent } from 'fluent-vue';
@@ -205,6 +210,7 @@ const settingsStore = useSettingsStore();
 const bomStore = useBomStore();
 
 const itemName = ref('');
+const searching = ref(false); // Add searching state
 const selectedWorld = computed({
     get: () => costStore.selectedWorld,
     set: (v) => costStore.setWorld(v)
@@ -263,21 +269,30 @@ const profit = computed(() => {
 async function handleSearch() {
     if (!itemName.value) return;
     
-    // 1. Search Item ID
-    const ds = await settingsStore.getDataSource();
-    const result = await ds.recipeTable(1, itemName.value);
-    
-    if (result.results.length > 0) {
-        // Pick first match? Or show dialog?
-        // For simplicity, pick first.
-        const r = result.results[0];
-        targetItem.value = { id: r.item_id, name: r.name }; // Wait, r.name might be recipe name?
+    searching.value = true;
+    try {
+        // 1. Search Item ID
+        const ds = await settingsStore.getDataSource();
+        const result = await ds.recipeTable(1, itemName.value);
         
-        // 2. Build Tree
-        await buildComponentTree(r.item_id, r.id);
-        
-        // 3. Fetch Prices
-        await refreshPrices();
+        if (result.results.length > 0) {
+            // Pick first match? Or show dialog?
+            // For simplicity, pick first.
+            const r = result.results[0];
+            targetItem.value = { id: r.item_id, name: r.name }; // Wait, r.name might be recipe name?
+            
+            // 2. Build Tree
+            await buildComponentTree(r.item_id, r.id);
+            
+            // 3. Fetch Prices
+            await refreshPrices();
+        } else {
+            ElMessage.warning($t('no-result-found'));
+        }
+    } catch (e) {
+        ElMessage.error($t('search-error') + ': ' + String(e));
+    } finally {
+        searching.value = false;
     }
 }
 
@@ -478,7 +493,10 @@ edit-price = 修改价格
 total-price = 总价
 hq = HQ
 trend = 价格趋势
+trend = 价格趋势
 please-search-item = 请搜索一个物品以开始计算。
+no-result-found = 未找到相关配方，请尝试其他名称。
+search-error = 搜索失败
 </fluent>
 
 <fluent locale="zh-TW">
@@ -497,7 +515,10 @@ edit-price = 修改價格
 total-price = 總價
 hq = HQ
 trend = 價格趨勢
+trend = 價格趨勢
 please-search-item = 請搜尋一個物品以開始計算。
+no-result-found = 未找到相關配方，請嘗試其他名稱。
+search-error = 搜尋失敗
 </fluent>
 
 <fluent locale="en-US">
@@ -516,7 +537,10 @@ edit-price = Edit Price
 total-price = Total Price
 hq = HQ
 trend = Price Trend
+trend = Price Trend
 please-search-item = Please search for an item to begin.
+no-result-found = No recipe found, please try another keyword.
+search-error = Search failed
 </fluent>
 
 <fluent locale="ja-JP">
@@ -535,6 +559,9 @@ edit-price = 価格編集
 total-price = 合計
 hq = HQ
 trend = 価格推移
+trend = 価格推移
 please-search-item = 計算を開始するにはアイテムを検索してください。
+no-result-found = レシピが見つかりませんでした。別のキーワードを試してください。
+search-error = 検索失敗
 </fluent>
 
