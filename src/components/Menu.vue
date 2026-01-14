@@ -22,10 +22,11 @@ import {
     Collection,
     User,
     EditPen,
+    Edit,
     Setting,
-    Guide,
-    Box,
+    Menu,
     Money,
+    Box
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 
@@ -69,10 +70,12 @@ const router = useRouter();
             <template #title>{{ $t('bom') }}</template>
         </el-menu-item>
         <el-menu-item index="/profit">
-            <el-icon>
-                <money />
-            </el-icon>
-            <template #title>{{ $t('profit') }}</template>
+            <el-icon><Money /></el-icon>
+            <span>{{ $t('profit-calculator') }}</span>
+        </el-menu-item>
+        <el-menu-item index="/inventory">
+            <el-icon><Box /></el-icon>
+            <span>{{ $t('inventory') }}</span>
         </el-menu-item>
         <el-menu-item index="/settings">
             <el-icon>
@@ -100,11 +103,12 @@ const router = useRouter();
 guide = 向导
 gearsets = 配装
 recipe = 配方
-simulator = 模拟
+simulator = 模拟器
 bom = 清单
-bom = 清单
-profit = 比价
-settings = 设置
+profit-calculator = 利润计算机
+inventory = 背包 / Solver
+about = 关于
+settings = 设置清单
 
 </fluent>
 
@@ -112,11 +116,12 @@ settings = 设置
 guide = 嚮導
 gearsets = 配裝
 recipe = 配方
-simulator = 模擬
+simulator = 模擬器
 bom = 清單
-bom = 清單
-profit = 比價
-settings = 設定
+profit-calculator = 利潤計算機
+inventory = 背包 / Solver
+about = 關於
+settings = 設定清單
 
 </fluent>
 
@@ -126,9 +131,10 @@ gearsets = Gearsets
 recipe = Recipes
 bom = BOM
 simulator = Simulator
-bom = BOM
-profit = Profit
-settings = Settings
+profit-calculator = Profit Cals
+inventory = Inventory
+about = About
+settings = Settingstings
 
 </fluent>
 

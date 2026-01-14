@@ -25,7 +25,8 @@ const CustomizeRecipe = () =>
 const DesignerVue = () => import('./components/designer/Page.vue');
 const BOMVue = () => import('./pages/Bom.vue');
 const SettingsVue = () => import('./pages/Settings.vue');
-const ProfitCalculator = () => import('./pages/ProfitCalculator.vue');
+const ProfitCalculator = () => import('@/pages/ProfitCalculator.vue');
+const Inventory = () => import('@/pages/Inventory.vue');
 
 
 const router = createRouter({
