@@ -40,6 +40,8 @@ jobs:
         run: |
           pnpm run prebuild-web
           pnpm run build-web
+          touch dist/.nojekyll
+
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
