@@ -44,6 +44,7 @@ const router = createRouter({
         { path: '/designer', name: 'designer', component: DesignerVue },
         { path: '/bom', name: 'bom', component: BOMVue },
         { path: '/profit', name: 'profit', component: ProfitCalculator },
+        { path: '/inventory', name: 'inventory', component: Inventory },
         { path: '/settings', name: 'settings', component: SettingsVue },
 
     ],

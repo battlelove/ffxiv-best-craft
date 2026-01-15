@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         v-model="visible"
-        :title="$t('select-recipe')"
+        :title="title || $t('select-recipe')"
         width="800px"
         append-to-body
         @closed="handleClose"
@@ -21,7 +21,7 @@
             :data="results"
             style="width: 100%; margin-top: 20px"
             height="400"
-            v-loading="loading"
+            v-tnze-loading="loading"
             @row-click="handleSelect"
             stripe
             highlight-current-row
@@ -34,13 +34,16 @@
                 </template>
             </el-table-column>
             <el-table-column prop="name" :label="$t('item-name')" />
-            <el-table-column prop="item_id" label="ID" width="100" />
-            <el-table-column prop="job" :label="$t('job')" width="100">
+            <el-table-column prop="item_id" label="ID" width="100" v-if="mode !== 'item'" />
+            <el-table-column prop="id" label="ID" width="100" v-else />
+            
+            <el-table-column prop="job" :label="$t('job')" width="100" v-if="mode !== 'item'">
                 <template #default="scope">
                     {{ scope.row.job_code || scope.row.job_name || '-' }}
                 </template>   
             </el-table-column>
-             <el-table-column prop="rlv" :label="$t('level')" width="80" />
+             <el-table-column prop="rlv" :label="$t('level')" width="80" v-if="mode !== 'item'" />
+             <el-table-column prop="level" :label="$t('level')" width="80" v-else />
         </el-table>
 
         <div class="pagination-container">
@@ -75,10 +78,15 @@ import useSettingsStore from '@/stores/settings';
 const { $t } = useFluent();
 const settingsStore = useSettingsStore();
 
-const props = defineProps<{
+interface ItemSelectorProps {
     modelValue: boolean;
     initialQuery?: string;
-}>();
+    title?: string;
+    mode?: 'recipe' | 'item'; 
+    customSearch?: (page: number, query: string) => Promise<{ results: any[], totalPages: number }>;
+}
+
+const props = defineProps<ItemSelectorProps>();
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void;
@@ -90,15 +98,22 @@ const searchQuery = ref('');
 const loading = ref(false);
 const results = ref<any[]>([]);
 const total = ref(0);
-const pageSize = 10; // API page size usually fixed or default
+const pageSize = 10;
 const currentPage = ref(1);
 
 // Sync modelValue with visible
 watch(() => props.modelValue, (val) => {
     visible.value = val;
-    if (val && props.initialQuery && props.initialQuery !== searchQuery.value) {
-        searchQuery.value = props.initialQuery;
-        handleSearch();
+    if (val) {
+        if (props.initialQuery && props.initialQuery !== searchQuery.value) {
+            searchQuery.value = props.initialQuery;
+            // Immediate search if we have an initial query
+            handleSearch();
+        } else {
+             // If no initial query, maybe just load default/empty results?
+             // User wants "sync", so maybe load page 1 immediately?
+             if (!results.value.length) handleSearch();
+        }
     }
 });
 
@@ -106,8 +121,18 @@ watch(visible, (val) => {
     emit('update:modelValue', val);
 });
 
+// Live Search with Debounce
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+watch(searchQuery, () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    loading.value = true; // Show loading state early for feedback
+    debounceTimer = setTimeout(() => {
+        handleSearch();
+    }, 500); // 500ms delay to avoid API spam
+});
+
 async function handleSearch() {
-    if (!searchQuery.value) return;
+    // if (!searchQuery.value) return; // Allow empty search to show default/all items
     currentPage.value = 1;
     await fetchResults();
 }
@@ -120,18 +145,22 @@ async function handlePageChange(page: number) {
 async function fetchResults() {
     loading.value = true;
     try {
-        const ds = await settingsStore.getDataSource();
-        // recipeTable(page, query, job?, rlv_min?, rlv_max?, category?)
-        const res = await ds.recipeTable(currentPage.value, searchQuery.value);
-        results.value = res.results.map(r => ({
-            ...r,
-            name: r.item_name, // Map item_name to name for display and selection
-        }));
-        total.value = res.totalPages * 10; // Estimation if total items count is unknown, but totalPages is known.
-        // Wait, RecipeSourceResult has `totalPages` but maybe not `totalCount`.
-        // Pagination component needs total count.
-        // If API doesn't give total count, we can mimic "Infinite Scroll" or just rely on totalPages * 10 (assuming 10 per page).
-        
+        if (props.customSearch) {
+             const res = await props.customSearch(currentPage.value, searchQuery.value);
+             results.value = res.results;
+             // Ensure totalPages is valid number
+             const pts = res.totalPages || 1;
+             total.value = pts * 10;
+        } else {
+            const ds = await settingsStore.getDataSource();
+            const res = await ds.recipeTable(currentPage.value, searchQuery.value);
+            results.value = res.results.map(r => ({
+                ...r,
+                name: r.item_name, 
+            }));
+            const pts = res.totalPages || 1;
+            total.value = pts * 10; 
+        }
     } catch (e) {
         ElMessage.error($t('search-error') + ': ' + String(e));
     } finally {
@@ -140,7 +169,13 @@ async function fetchResults() {
 }
 
 function handleSelect(row: any) {
-    emit('select', { id: row.item_id, name: row.name, recipeId: row.id });
+    if (props.mode === 'item') {
+        // Row is Item: { id, name, ... }
+        emit('select', { id: row.id, name: row.name, recipeId: 0 });
+    } else {
+        // Row is Recipe: { id, item_id, item_name ... }
+        emit('select', { id: row.item_id, name: row.name, recipeId: row.id });
+    }
     visible.value = false;
 }
 

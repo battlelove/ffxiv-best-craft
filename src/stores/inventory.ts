@@ -71,6 +71,23 @@ export const useInventoryStore = defineStore('inventory', () => {
         return (items.value.get(id) || 0) >= amount;
     }
 
+    function fromJson(json: string) {
+        if (!json) return;
+        try {
+            const parsed = JSON.parse(json);
+            // Expected format: [[id, amount], [id, amount]]
+            if (Array.isArray(parsed)) {
+                items.value = new Map(parsed);
+            }
+        } catch (e) {
+            console.error('Failed to load inventory from custom logic', e);
+        }
+    }
+
+    function toJson(): string {
+        return JSON.stringify(Array.from(items.value.entries()));
+    }
+
     return {
         items,
         itemList,
@@ -78,7 +95,9 @@ export const useInventoryStore = defineStore('inventory', () => {
         setItem,
         removeItem,
         clear,
-        hasItem
+        hasItem,
+        fromJson,
+        toJson
     };
 });
 

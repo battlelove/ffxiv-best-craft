@@ -26,7 +26,8 @@ import {
     Setting,
     Menu,
     Money,
-    Box
+    Box,
+    Guide
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 
