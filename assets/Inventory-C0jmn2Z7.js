@@ -1,0 +1,111 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/RecipeMap-B4AJ7Dh2.js","assets/ItemMap-DVgOOU4h.js"])))=>i.map(i=>d[i]);
+import{y as ae,aq as se,r as P,L as oe,w as ie,B as k,C as I,a7 as i,a1 as f,u as t,J as j,a8 as le,D as pe,K as l,P as w,M as re,ac as he,an as C,ay as ce,k as ye,aa as O,O as ve,al as q}from"./_plugin-vue_export-helper-Dh6l7_xc.js";import{a9 as ge,aa as _e,ab as we,ac as Ie,ad as be,ae as ke,I as Ce,a5 as Ve,a6 as Ee}from"./web-source-Dn0kdXsh.js";import{p as me,u as X}from"./main-Cs14Vgdd.js";import{E as S,a as K}from"./el-table-column-Bnb5O0k3.js";import"./el-checkbox-DgISsoG1.js";import"./el-scrollbar-Cvg3e9w7.js";/* empty css               */import{E as B}from"./el-input-number-GhSQsCBl.js";import{E as Se}from"./el-progress-CXzf29W_.js";import{I as xe}from"./ItemSelector-CNwNjixE.js";import{E as F}from"./index-Dc66h6Rs.js";import{E as W}from"./index-D7ceg4Lh.js";import"./gearsets-7QdINSHX.js";import"./merge-CtbZhPCX.js";import"./_baseIteratee-BCDgjS2P.js";import"./_initCloneObject-Dc3DrJWN.js";import"./raf-AOJ-0H7R.js";import"./use-form-item-DV-tmzu8.js";import"./_baseSlice-F8doVSIJ.js";import"./el-pagination-DsJWDLkr.js";import"./el-select-By4IET7w.js";import"./strings-DkH76Y51.js";import"./index-BOaqDftn.js";const ze={class:"crystal-input-container"},$e={class:"crystal-grid"},Ae={class:"grid-header"},Re={class:"grid-header"},Le={class:"grid-header"},Pe={class:"element-name"},Ne={class:"crystal-cell"},Me={class:"crystal-cell"},Ue={class:"crystal-cell"},N=ae({__name:"CrystalInput",setup(s){const{$t:e}=se(),d=me(),x=[{name:"fire",color:"#ff4d4f",icon:ge,ids:[2,8,14]},{name:"ice",color:"#40a9ff",icon:_e,ids:[3,9,15]},{name:"wind",color:"#73d13d",icon:we,ids:[4,10,16]},{name:"earth",color:"#d4b106",icon:Ie,ids:[5,11,17]},{name:"lightning",color:"#f7ba2a",icon:be,ids:[6,12,18]},{name:"water",color:"#1890ff",icon:ke,ids:[7,13,19]}],g=P({});function V(){x.forEach(E=>{E.ids.forEach(h=>{g.value[h]=d.items.get(h)||0})})}oe(()=>{V()}),ie(()=>d.items,()=>{V()},{deep:!0});function b(E,h){h==null&&(h=0),d.setItem(E,h)}return(E,h)=>(I(),k("div",ze,[i("h3",null,f(t(e)("crystals")),1),i("div",$e,[h[0]||(h[0]=i("div",{class:"grid-header"},null,-1)),i("div",Ae,f(t(e)("shard")),1),i("div",Re,f(t(e)("crystal")),1),i("div",Le,f(t(e)("cluster")),1),(I(),k(j,null,le(x,(u,J)=>(I(),k(j,{key:u.name},[i("div",{class:"element-label",style:pe({color:u.color})},[l(t(Ce),null,{default:w(()=>[(I(),re(he(u.icon)))]),_:2},1024),i("span",Pe,f(t(e)(u.name)),1)],4),i("div",Ne,[l(t(B),{modelValue:g.value[u.ids[0]],"onUpdate:modelValue":p=>g.value[u.ids[0]]=p,min:0,"controls-position":"right",size:"small",onChange:p=>b(u.ids[0],p)},null,8,["modelValue","onUpdate:modelValue","onChange"])]),i("div",Me,[l(t(B),{modelValue:g.value[u.ids[1]],"onUpdate:modelValue":p=>g.value[u.ids[1]]=p,min:0,"controls-position":"right",size:"small",onChange:p=>b(u.ids[1],p)},null,8,["modelValue","onUpdate:modelValue","onChange"])]),i("div",Ue,[l(t(B),{modelValue:g.value[u.ids[2]],"onUpdate:modelValue":p=>g.value[u.ids[2]]=p,min:0,"controls-position":"right",size:"small",onChange:p=>b(u.ids[2],p)},null,8,["modelValue","onUpdate:modelValue","onChange"])])],64))),64))])]))}});function Q(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["zh-CN"]=new C(`crystals = 水晶
+shard = 碎晶
+crystal = 水晶
+cluster = 晶簇
+fire = 火
+ice = 冰
+wind = 风
+earth = 土
+lightning = 雷
+water = 水`)}function G(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["zh-TW"]=new C(`crystals = 水晶
+shard = 碎晶
+crystal = 水晶
+cluster = 晶簇
+fire = 火
+ice = 冰
+wind = 風
+earth = 土
+lightning = 雷
+water = 水`)}function H(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["en-US"]=new C(`crystals = Crystals
+shard = Shard
+crystal = Crystal
+cluster = Cluster
+fire = Fire
+ice = Ice
+wind = Wind
+earth = Earth
+lightning = Lightning
+water = Water`)}function Y(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["ja-JP"]=new C(`crystals = クリスタル
+shard = シャード
+crystal = クリスタル
+cluster = クラスター
+fire = 火
+ice = 氷
+wind = 風
+earth = 土
+lightning = 雷
+water = 水`)}typeof Q=="function"&&Q(N);typeof G=="function"&&G(N);typeof H=="function"&&H(N);typeof Y=="function"&&Y(N);const De=ce(N,[["__scopeId","data-v-d8663d88"]]),Te={class:"inventory-page"},qe={class:"section-card"},Fe={class:"search-bar"},Be={class:"section-card"},Oe={class:"header-row"},We={class:"section-card solver-section"},je={class:"header-row"},Je={class:"hint-text"},Xe={key:0,class:"success-text"},Ke={key:1,class:"missing-list"},M=ae({__name:"Inventory",setup(s){const{$t:e}=se(),d=me();X();const x=P(!1),g=P(!1),V=P([]),b=P(new Map);async function E(){const n=d.itemList;if(!n)return;const{getLocalItemName:r}=await q(async()=>{const{getLocalItemName:a}=await import("./ItemMap-DVgOOU4h.js");return{getLocalItemName:a}},[]);for(const a of n){if(b.value.has(a.id))continue;const c=r(a.id);if(c){b.value.set(a.id,c);continue}}}oe(()=>{E()}),ie(()=>d.itemList,()=>{E()},{deep:!0});const h=ye(()=>{const n=d.itemList;return!n||!Array.isArray(n)?[]:n.map(r=>({...r,name:b.value.get(r.id)||`Item #${r.id}`}))});async function u(n,r){const a=X(),c=(async()=>{if(n>1)return[];const{searchLocalItemsFuzzy:o}=await q(async()=>{const{searchLocalItemsFuzzy:m}=await import("./ItemMap-DVgOOU4h.js");return{searchLocalItemsFuzzy:m}},[]);return o(r).map(m=>({id:m.id,name:m.name,level:1,can_be_hq:!1,is_recipe:!1,is_local:!0}))})(),A=(async()=>{try{const o=`https://cafemaker.wakingsands.com/search?string=${encodeURIComponent(r)}&indexes=Item&limit=20&page=${n}`,m=await(await fetch(o,{mode:"cors"})).json();return m.Results?m.Results.map(L=>({id:L.ID,name:L.Name,level:1,can_be_hq:!1,is_recipe:!1})):[]}catch(o){return console.warn("CafeMaker search failed",o),[]}})(),_=(async()=>{try{return(await(await a.getDataSource()).recipeTable(n,r)).results.map(m=>({id:m.item_id,name:m.item_name,level:m.rlv,can_be_hq:m.can_hq,is_recipe:!0,original_recipe:m}))}catch(o){return console.warn("DataSource search failed",o),[]}})(),[R,U,D]=await Promise.all([c,A,_]),y=new Map;U.forEach(o=>y.set(o.id,o)),D.forEach(o=>y.set(o.id,o)),R.forEach(o=>y.set(o.id,o));const z=Array.from(y.values()),{getLocalItemName:T}=await q(async()=>{const{getLocalItemName:o}=await import("./ItemMap-DVgOOU4h.js");return{getLocalItemName:o}},[]);for(const o of z){const v=T(o.id);v&&(o.name=v)}let $=n;return(U.length>=20||D.length>=20||R.length>=50)&&($=n+1),{results:z,totalPages:$}}function J(n){d.addItem(n.id,1),b.value.set(n.id,n.name)}function p(n,r){d.setItem(n,r)}function de(n){d.removeItem(n)}function ue(){d.clear()}async function fe(){if(d.itemList.length===0){W.warning(e("inventory-empty"));return}g.value=!0,V.value=[];try{const n=d.itemList.map(_=>_.id),r=n.slice(0,5);n.length>5&&W.info(e("solver-limit-warning"));let a=0;const c=20,A=new Map;for(const[_,R]of d.items.entries()){if(a>=c)break;if(a++,_>=2&&_<=19)continue;const{findRecipesUsingItem:U}=await q(async()=>{const{findRecipesUsingItem:y}=await import("./RecipeMap-B4AJ7Dh2.js");return{findRecipesUsingItem:y}},__vite__mapDeps([0,1])),D=U(_);for(const y of D){if(A.has(y.resultItemId))continue;let z=0,T=0,$=999;const o=[];for(const v of y.ingredients){const m=d.items.get(v.id)||0,L=Math.floor(m/v.amount);L<$&&($=L),m>=v.amount?T++:o.push({id:v.id,name:v.name,amount:v.amount-m}),z++}A.set(y.resultItemId,{id:y.resultItemId,name:y.name,completeness:z>0?T/z:0,maxCraftable:$,missing:o})}}V.value=Array.from(A.values()).filter(_=>_.completeness>.1).sort((_,R)=>R.completeness-_.completeness)}catch(n){console.error(n),W.error(e("solver-error")+": "+String(n))}finally{g.value=!1}}return(n,r)=>(I(),k("div",Te,[i("h2",null,f(t(e)("inventory-management")),1),i("div",qe,[i("div",Fe,[l(t(F),{onClick:r[0]||(r[0]=a=>x.value=!0),icon:t(Ve),type:"primary"},{default:w(()=>[O(f(t(e)("add-item")),1)]),_:1},8,["icon"])])]),l(De),i("div",Be,[i("div",Oe,[i("h3",null,f(t(e)("my-inventory")),1),l(t(F),{type:"danger",link:"",onClick:ue},{default:w(()=>[O(f(t(e)("clear-all")),1)]),_:1})]),l(t(K),{data:h.value,style:{width:"100%"},"max-height":"400"},{default:w(()=>[l(t(S),{prop:"name",label:t(e)("item-name")},null,8,["label"]),l(t(S),{label:t(e)("quantity"),width:"200"},{default:w(a=>[l(t(B),{modelValue:a.row.amount,"onUpdate:modelValue":c=>a.row.amount=c,min:1,size:"small",onChange:c=>p(a.row.id,c)},null,8,["modelValue","onUpdate:modelValue","onChange"])]),_:1},8,["label"]),l(t(S),{width:"100",align:"right"},{default:w(a=>[l(t(F),{type:"danger",icon:t(Ee),circle:"",size:"small",onClick:c=>de(a.row.id)},null,8,["icon","onClick"])]),_:1})]),_:1},8,["data"])]),i("div",We,[i("div",je,[i("h3",null,f(t(e)("crafting-solver")),1),l(t(F),{type:"success",onClick:fe,loading:g.value},{default:w(()=>[O(f(t(e)("analyze-recipes")),1)]),_:1},8,["loading"])]),i("p",Je,f(t(e)("solver-hint")),1),V.value.length>0?(I(),re(t(K),{key:0,data:V.value,style:{width:"100%"}},{default:w(()=>[l(t(S),{prop:"name",label:t(e)("recipe-name")},null,8,["label"]),l(t(S),{label:t(e)("completeness"),width:"180",sortable:"","sort-method":(a,c)=>a.completeness-c.completeness},{default:w(a=>[l(t(Se),{percentage:Math.round(a.row.completeness*100),status:a.row.completeness===1?"success":"warning"},null,8,["percentage","status"])]),_:1},8,["label","sort-method"]),l(t(S),{label:t(e)("max-craftable"),width:"120",align:"center",prop:"maxCraftable"},null,8,["label"]),l(t(S),{label:t(e)("missing-materials")},{default:w(a=>[a.row.missing.length===0?(I(),k("div",Xe,f(t(e)("ready-to-craft")),1)):(I(),k("div",Ke,[(I(!0),k(j,null,le(a.row.missing,c=>(I(),k("span",{key:c.id,class:"missing-item"},f(c.name)+" x"+f(c.amount),1))),128))]))]),_:1},8,["label"])]),_:1},8,["data"])):ve("",!0)]),l(xe,{modelValue:x.value,"onUpdate:modelValue":r[1]||(r[1]=a=>x.value=a),title:t(e)("select-item"),mode:"item","custom-search":u,onSelect:J},null,8,["modelValue","title"])]))}});function Z(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["zh-CN"]=new C(`inventory-management = 背包管理
+add-item = 添加物品
+select-item = 选择物品
+search-item-placeholder = 搜索物品以添加...
+my-inventory = 我的素材
+clear-all = 清空
+item-name = 物品名称
+quantity = 数量
+crafting-solver = 制作求解器 (Solver)
+analyze-recipes = 分析可制作配方
+solver-hint = 提示：目前仅分析前5個素材，且使用XIVAPI数据。如有不准确请见谅。
+recipe-name = 配方名称
+completeness = 完整度
+max-craftable = 可制作数量
+missing-materials = 缺少的素材
+ready-to-craft = 素材齐备！
+inventory-empty = 背包是空的，请先添加素材。
+solver-limit-warning = 为避免过载，目前仅使用前5个素材进行分析。
+solver-error = 分析失败`)}function ee(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["zh-TW"]=new C(`inventory-management = 背包管理
+add-item = 新增物品
+select-item = 選擇物品
+search-item-placeholder = 搜尋物品以新增...
+my-inventory = 我的素材
+clear-all = 清空
+item-name = 物品名稱
+quantity = 數量
+crafting-solver = 製作求解器 (Solver)
+analyze-recipes = 分析可製作配方
+solver-hint = 提示：目前僅分析前5個素材，且使用XIVAPI數據。如有不準確請見諒。
+recipe-name = 配方名稱
+completeness = 完整度
+max-craftable = 可製作數量
+missing-materials = 缺少素材
+ready-to-craft = 素材齊全！
+inventory-empty = 背包是空的，請先新增素材。
+solver-limit-warning = 為避免過載，目前僅使用前5個素材進行分析。
+solver-error = 分析失敗`)}function te(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["en-US"]=new C(`inventory-management = Inventory Management
+add-item = Add Item
+select-item = Select Item
+search-item-placeholder = Search items to add...
+my-inventory = My Inventory
+clear-all = Clear All
+item-name = Item Name
+quantity = Quantity
+crafting-solver = Crafting Solver
+analyze-recipes = Analyze Recipes
+solver-hint = Note: Analyzes only first 5 items due to API limits.
+recipe-name = Recipe Name
+completeness = Completeness
+max-craftable = Max Craftable
+missing-materials = Missing Materials
+ready-to-craft = Ready to Craft!
+inventory-empty = Inventory is empty.
+solver-limit-warning = Only first 5 items are used for analysis.
+solver-error = Analysis Failed`)}function ne(s){const e=s.options||s;e.fluent=e.fluent||{},e.fluent["ja-JP"]=new C(`inventory-management = 所持品管理
+add-item = アイテム追加
+select-item = アイテムを選択
+search-item-placeholder = アイテムを検索して追加...
+my-inventory = 所持素材
+clear-all = クリア
+item-name = アイテム名
+quantity = 数量
+crafting-solver = 製作ソルバー
+analyze-recipes = レシピを分析
+solver-hint = ヒント：API制限のため、最初の5つのアイテムのみ分析されます。
+recipe-name = レシピ名
+completeness = 完成度
+max-craftable = 製作可能数
+missing-materials = 不足素材
+ready-to-craft = 製作可能！
+inventory-empty = 所持品が空です。
+solver-limit-warning = 最初の5つのアイテムのみ分析に使用されます。
+solver-error = 分析失敗`)}typeof Z=="function"&&Z(M);typeof ee=="function"&&ee(M);typeof te=="function"&&te(M);typeof ne=="function"&&ne(M);const gt=ce(M,[["__scopeId","data-v-7c7ec923"]]);export{gt as default};
+//# sourceMappingURL=Inventory-C0jmn2Z7.js.map
