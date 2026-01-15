@@ -482,7 +482,6 @@ max-craftable = 可制作数量
 missing-materials = 缺少的素材
 ready-to-craft = 素材齐备！
 inventory-empty = 背包是空的，请先添加素材。
-solver-limit-warning = 
 solver-error = 分析失败
 </fluent>
 
@@ -504,7 +503,6 @@ max-craftable = 可製作數量
 missing-materials = 缺少素材
 ready-to-craft = 素材齊全！
 inventory-empty = 背包是空的，請先新增素材。
-solver-limit-warning = 
 solver-error = 分析失敗
 </fluent>
 
@@ -526,7 +524,6 @@ max-craftable = Max Craftable
 missing-materials = Missing Materials
 ready-to-craft = Ready to Craft!
 inventory-empty = Inventory is empty.
-solver-limit-warning = 
 solver-error = Analysis Failed
 </fluent>
 
@@ -548,6 +545,5 @@ max-craftable = 製作可能数
 missing-materials = 不足素材
 ready-to-craft = 製作可能！
 inventory-empty = 所持品が空です。
-solver-limit-warning = 
 solver-error = 分析失敗
 </fluent>
