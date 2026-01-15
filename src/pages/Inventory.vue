@@ -169,10 +169,12 @@ watch(() => inventoryStore.itemList, () => {
 const inventoryListWithInfo = computed(() => {
     const list = inventoryStore.itemList;
     if (!list || !Array.isArray(list)) return [];
-    return list.map(item => ({
-        ...item,
-        name: inventoryItemDetails.value.get(item.id) || `Item #${item.id}`
-    }));
+    return list
+        .filter(item => !(Number(item.id) >= 2 && Number(item.id) <= 19)) // Filter out crystals
+        .map(item => ({
+            ...item,
+            name: inventoryItemDetails.value.get(item.id) || `Item #${item.id}`
+        }));
 });
 
 // Custom search function for ItemSelector to find Items (not just recipes)
@@ -324,20 +326,19 @@ async function runSolver() {
         // Max URL length is concern.
         
         // Let's chunk it.
-        const chunk = inventoryIds.slice(0, 5); // Limit to 5 items for test/performance
-        if (inventoryIds.length > 5) {
-             ElMessage.info($t('solver-limit-warning'));
-        }
+        // Let's chunk it.
+        // const chunk = inventoryIds.slice(0, 5); // Limit removed
+        
         // Optimization: Only check for the first few items or "valuable" items to avoid spamming API?
         // Analyzing ALL items is slow (N items * API call).
         // Let's increment.
         
         let checkedCount = 0;
-        const maxCheck = 20; // Increased limit for local search as it is fast
+        // const maxCheck = 20; // Limit removed
         const candidates = new Map<number, SolvedRecipe>(); // Restore candidates map
         
         for (const [itemId, amount] of inventoryStore.items.entries()) {
-            if (checkedCount >= maxCheck) break;
+            // if (checkedCount >= maxCheck) break;
             checkedCount++;
             
             // Skip crystals (IDs 2-19) as they return too many recipes
@@ -474,14 +475,14 @@ item-name = 物品名称
 quantity = 数量
 crafting-solver = 制作求解器 (Solver)
 analyze-recipes = 分析可制作配方
-solver-hint = 提示：目前仅分析前5個素材，且使用XIVAPI数据。如有不准确请见谅。
+solver-hint = 提示：使用本地數據分析所有素材。
 recipe-name = 配方名称
 completeness = 完整度
 max-craftable = 可制作数量
 missing-materials = 缺少的素材
 ready-to-craft = 素材齐备！
 inventory-empty = 背包是空的，请先添加素材。
-solver-limit-warning = 为避免过载，目前仅使用前5个素材进行分析。
+solver-limit-warning = 
 solver-error = 分析失败
 </fluent>
 
@@ -496,14 +497,14 @@ item-name = 物品名稱
 quantity = 數量
 crafting-solver = 製作求解器 (Solver)
 analyze-recipes = 分析可製作配方
-solver-hint = 提示：目前僅分析前5個素材，且使用XIVAPI數據。如有不準確請見諒。
+solver-hint = 提示：使用本地數據分析所有素材。
 recipe-name = 配方名稱
 completeness = 完整度
 max-craftable = 可製作數量
 missing-materials = 缺少素材
 ready-to-craft = 素材齊全！
 inventory-empty = 背包是空的，請先新增素材。
-solver-limit-warning = 為避免過載，目前僅使用前5個素材進行分析。
+solver-limit-warning = 
 solver-error = 分析失敗
 </fluent>
 
@@ -518,14 +519,14 @@ item-name = Item Name
 quantity = Quantity
 crafting-solver = Crafting Solver
 analyze-recipes = Analyze Recipes
-solver-hint = Note: Analyzes only first 5 items due to API limits.
+solver-hint = Note: Analyzing all items using local data.
 recipe-name = Recipe Name
 completeness = Completeness
 max-craftable = Max Craftable
 missing-materials = Missing Materials
 ready-to-craft = Ready to Craft!
 inventory-empty = Inventory is empty.
-solver-limit-warning = Only first 5 items are used for analysis.
+solver-limit-warning = 
 solver-error = Analysis Failed
 </fluent>
 
@@ -540,13 +541,13 @@ item-name = アイテム名
 quantity = 数量
 crafting-solver = 製作ソルバー
 analyze-recipes = レシピを分析
-solver-hint = ヒント：API制限のため、最初の5つのアイテムのみ分析されます。
+solver-hint = ヒント：ローカルデータを使用してすべてのアイテムを分析します。
 recipe-name = レシピ名
 completeness = 完成度
 max-craftable = 製作可能数
 missing-materials = 不足素材
 ready-to-craft = 製作可能！
 inventory-empty = 所持品が空です。
-solver-limit-warning = 最初の5つのアイテムのみ分析に使用されます。
+solver-limit-warning = 
 solver-error = 分析失敗
 </fluent>
