@@ -1,0 +1,75 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/RecipeMap-B4AJ7Dh2.js","assets/ItemMap-DVgOOU4h.js"])))=>i.map(i=>d[i]);
+import{y as Z,aq as ee,r as P,L as te,w as ne,k as ae,B as E,C as I,a7 as p,K as l,a1 as y,u as t,P as v,aa as D,M as se,O as oe,J as ie,a8 as re,al as N,an as M,ay as le}from"./_plugin-vue_export-helper-Dh6l7_xc.js";import{a5 as ce,a6 as me}from"./web-source-DZ1KEQTE.js";import{p as ue,u as U}from"./main-Bla8NsPw.js";import{E as h,a as F}from"./el-table-column-Cl8n-pfG.js";import"./el-checkbox-fe-4Jxmp.js";import"./el-scrollbar-DQXrPIwP.js";/* empty css               */import{E as de}from"./el-input-number-C_WvPqAq.js";import{E as fe}from"./el-progress-C6-qexPs.js";import{I as pe}from"./ItemSelector-DpgO95QW.js";import{E as V}from"./index-Blb4aN9D.js";import{E as q}from"./index-Z_3TIEi3.js";import"./gearsets-7QdINSHX.js";import"./merge-CtbZhPCX.js";import"./_baseIteratee-BCDgjS2P.js";import"./_initCloneObject-Dc3DrJWN.js";import"./raf-pbGj1jnU.js";import"./use-form-item-BFZw0zre.js";import"./_baseSlice-F8doVSIJ.js";import"./el-pagination-CxtuEM_9.js";import"./el-select-BrguFgfw.js";import"./strings-DkH76Y51.js";import"./index-C421c4ml.js";const ye={class:"inventory-page"},ve={class:"section-card"},he={class:"search-bar"},ge={class:"section-card"},_e={class:"header-row"},Ie={class:"section-card solver-section"},we={class:"header-row"},be={class:"hint-text"},ke={key:0,class:"success-text"},Ee={key:1,class:"missing-list"},C=Z({__name:"Inventory",setup(c){const{$t:e}=ee(),d=ue();U();const z=P(!1),T=P(!1),S=P([]),x=P(new Map);async function B(){const n=d.itemList;if(!n)return;const{getLocalItemName:o}=await N(async()=>{const{getLocalItemName:a}=await import("./ItemMap-DVgOOU4h.js");return{getLocalItemName:a}},[]);for(const a of n){if(x.value.has(a.id))continue;const i=o(a.id);if(i){x.value.set(a.id,i);continue}}}te(()=>{B()}),ne(()=>d.itemList,()=>{B()},{deep:!0});const W=ae(()=>{const n=d.itemList;return!n||!Array.isArray(n)?[]:n.map(o=>({...o,name:x.value.get(o.id)||`Item #${o.id}`}))});async function X(n,o){const a=U(),i=(async()=>{if(n>1)return[];const{searchLocalItemsFuzzy:s}=await N(async()=>{const{searchLocalItemsFuzzy:r}=await import("./ItemMap-DVgOOU4h.js");return{searchLocalItemsFuzzy:r}},[]);return s(o).map(r=>({id:r.id,name:r.name,level:1,can_be_hq:!1,is_recipe:!1,is_local:!0}))})(),w=(async()=>{try{const s=`https://cafemaker.wakingsands.com/search?string=${encodeURIComponent(o)}&indexes=Item&limit=20&page=${n}`,r=await(await fetch(s,{mode:"cors"})).json();return r.Results?r.Results.map(k=>({id:k.ID,name:k.Name,level:1,can_be_hq:!1,is_recipe:!1})):[]}catch(s){return console.warn("CafeMaker search failed",s),[]}})(),f=(async()=>{try{return(await(await a.getDataSource()).recipeTable(n,o)).results.map(r=>({id:r.item_id,name:r.item_name,level:r.rlv,can_be_hq:r.can_hq,is_recipe:!0,original_recipe:r}))}catch(s){return console.warn("DataSource search failed",s),[]}})(),[b,R,A]=await Promise.all([i,w,f]),m=new Map;R.forEach(s=>m.set(s.id,s)),A.forEach(s=>m.set(s.id,s)),b.forEach(s=>m.set(s.id,s));const g=Array.from(m.values()),{getLocalItemName:L}=await N(async()=>{const{getLocalItemName:s}=await import("./ItemMap-DVgOOU4h.js");return{getLocalItemName:s}},[]);for(const s of g){const u=L(s.id);u&&(s.name=u)}let _=n;return(R.length>=20||A.length>=20||b.length>=50)&&(_=n+1),{results:g,totalPages:_}}function K(n){d.addItem(n.id,1),x.value.set(n.id,n.name)}function Q(n,o){d.setItem(n,o)}function G(n){d.removeItem(n)}function H(){d.clear()}async function Y(){if(d.itemList.length===0){q.warning(e("inventory-empty"));return}T.value=!0,S.value=[];try{const n=d.itemList.map(f=>f.id),o=n.slice(0,5);n.length>5&&q.info(e("solver-limit-warning"));let a=0;const i=20,w=new Map;for(const[f,b]of d.items.entries()){if(a>=i)break;if(a++,f>=2&&f<=19)continue;const{findRecipesUsingItem:R}=await N(async()=>{const{findRecipesUsingItem:m}=await import("./RecipeMap-B4AJ7Dh2.js");return{findRecipesUsingItem:m}},__vite__mapDeps([0,1])),A=R(f);for(const m of A){if(w.has(m.resultItemId))continue;let g=0,L=0,_=999;const s=[];for(const u of m.ingredients){const r=d.items.get(u.id)||0,k=Math.floor(r/u.amount);k<_&&(_=k),r>=u.amount?L++:s.push({id:u.id,name:u.name,amount:u.amount-r}),g++}w.set(m.resultItemId,{id:m.resultItemId,name:m.name,completeness:g>0?L/g:0,maxCraftable:_,missing:s})}}S.value=Array.from(w.values()).filter(f=>f.completeness>.1).sort((f,b)=>b.completeness-f.completeness)}catch(n){console.error(n),q.error(e("solver-error")+": "+String(n))}finally{T.value=!1}}return(n,o)=>(I(),E("div",ye,[p("h2",null,y(t(e)("inventory-management")),1),p("div",ve,[p("div",he,[l(t(V),{onClick:o[0]||(o[0]=a=>z.value=!0),icon:t(ce),type:"primary"},{default:v(()=>[D(y(t(e)("add-item")),1)]),_:1},8,["icon"])])]),p("div",ge,[p("div",_e,[p("h3",null,y(t(e)("my-inventory")),1),l(t(V),{type:"danger",link:"",onClick:H},{default:v(()=>[D(y(t(e)("clear-all")),1)]),_:1})]),l(t(F),{data:W.value,style:{width:"100%"},"max-height":"400"},{default:v(()=>[l(t(h),{prop:"name",label:t(e)("item-name")},null,8,["label"]),l(t(h),{label:t(e)("quantity"),width:"200"},{default:v(a=>[l(t(de),{modelValue:a.row.amount,"onUpdate:modelValue":i=>a.row.amount=i,min:1,size:"small",onChange:i=>Q(a.row.id,i)},null,8,["modelValue","onUpdate:modelValue","onChange"])]),_:1},8,["label"]),l(t(h),{width:"100",align:"right"},{default:v(a=>[l(t(V),{type:"danger",icon:t(me),circle:"",size:"small",onClick:i=>G(a.row.id)},null,8,["icon","onClick"])]),_:1})]),_:1},8,["data"])]),p("div",Ie,[p("div",we,[p("h3",null,y(t(e)("crafting-solver")),1),l(t(V),{type:"success",onClick:Y,loading:T.value},{default:v(()=>[D(y(t(e)("analyze-recipes")),1)]),_:1},8,["loading"])]),p("p",be,y(t(e)("solver-hint")),1),S.value.length>0?(I(),se(t(F),{key:0,data:S.value,style:{width:"100%"}},{default:v(()=>[l(t(h),{prop:"name",label:t(e)("recipe-name")},null,8,["label"]),l(t(h),{label:t(e)("completeness"),width:"180",sortable:"","sort-method":(a,i)=>a.completeness-i.completeness},{default:v(a=>[l(t(fe),{percentage:Math.round(a.row.completeness*100),status:a.row.completeness===1?"success":"warning"},null,8,["percentage","status"])]),_:1},8,["label","sort-method"]),l(t(h),{label:t(e)("max-craftable"),width:"120",align:"center",prop:"maxCraftable"},null,8,["label"]),l(t(h),{label:t(e)("missing-materials")},{default:v(a=>[a.row.missing.length===0?(I(),E("div",ke,y(t(e)("ready-to-craft")),1)):(I(),E("div",Ee,[(I(!0),E(ie,null,re(a.row.missing,i=>(I(),E("span",{key:i.id,class:"missing-item"},y(i.name)+" x"+y(i.amount),1))),128))]))]),_:1},8,["label"])]),_:1},8,["data"])):oe("",!0)]),l(pe,{modelValue:z.value,"onUpdate:modelValue":o[1]||(o[1]=a=>z.value=a),title:t(e)("select-item"),mode:"item","custom-search":X,onSelect:K},null,8,["modelValue","title"])]))}});function O(c){const e=c.options||c;e.fluent=e.fluent||{},e.fluent["zh-CN"]=new M(`inventory-management = 背包管理
+add-item = 添加物品
+select-item = 选择物品
+search-item-placeholder = 搜索物品以添加...
+my-inventory = 我的素材
+clear-all = 清空
+item-name = 物品名称
+quantity = 数量
+crafting-solver = 制作求解器 (Solver)
+analyze-recipes = 分析可制作配方
+solver-hint = 提示：目前仅分析前5個素材，且使用XIVAPI数据。如有不准确请见谅。
+recipe-name = 配方名称
+completeness = 完整度
+max-craftable = 可制作数量
+missing-materials = 缺少的素材
+ready-to-craft = 素材齐备！
+inventory-empty = 背包是空的，请先添加素材。
+solver-limit-warning = 为避免过载，目前仅使用前5个素材进行分析。
+solver-error = 分析失败`)}function $(c){const e=c.options||c;e.fluent=e.fluent||{},e.fluent["zh-TW"]=new M(`inventory-management = 背包管理
+add-item = 新增物品
+select-item = 選擇物品
+search-item-placeholder = 搜尋物品以新增...
+my-inventory = 我的素材
+clear-all = 清空
+item-name = 物品名稱
+quantity = 數量
+crafting-solver = 製作求解器 (Solver)
+analyze-recipes = 分析可製作配方
+solver-hint = 提示：目前僅分析前5個素材，且使用XIVAPI數據。如有不準確請見諒。
+recipe-name = 配方名稱
+completeness = 完整度
+max-craftable = 可製作數量
+missing-materials = 缺少素材
+ready-to-craft = 素材齊全！
+inventory-empty = 背包是空的，請先新增素材。
+solver-limit-warning = 為避免過載，目前僅使用前5個素材進行分析。
+solver-error = 分析失敗`)}function j(c){const e=c.options||c;e.fluent=e.fluent||{},e.fluent["en-US"]=new M(`inventory-management = Inventory Management
+add-item = Add Item
+select-item = Select Item
+search-item-placeholder = Search items to add...
+my-inventory = My Inventory
+clear-all = Clear All
+item-name = Item Name
+quantity = Quantity
+crafting-solver = Crafting Solver
+analyze-recipes = Analyze Recipes
+solver-hint = Note: Analyzes only first 5 items due to API limits.
+recipe-name = Recipe Name
+completeness = Completeness
+max-craftable = Max Craftable
+missing-materials = Missing Materials
+ready-to-craft = Ready to Craft!
+inventory-empty = Inventory is empty.
+solver-limit-warning = Only first 5 items are used for analysis.
+solver-error = Analysis Failed`)}function J(c){const e=c.options||c;e.fluent=e.fluent||{},e.fluent["ja-JP"]=new M(`inventory-management = 所持品管理
+add-item = アイテム追加
+select-item = アイテムを選択
+search-item-placeholder = アイテムを検索して追加...
+my-inventory = 所持素材
+clear-all = クリア
+item-name = アイテム名
+quantity = 数量
+crafting-solver = 製作ソルバー
+analyze-recipes = レシピを分析
+solver-hint = ヒント：API制限のため、最初の5つのアイテムのみ分析されます。
+recipe-name = レシピ名
+completeness = 完成度
+max-craftable = 製作可能数
+missing-materials = 不足素材
+ready-to-craft = 製作可能！
+inventory-empty = 所持品が空です。
+solver-limit-warning = 最初の5つのアイテムのみ分析に使用されます。
+solver-error = 分析失敗`)}typeof O=="function"&&O(C);typeof $=="function"&&$(C);typeof j=="function"&&j(C);typeof J=="function"&&J(C);const Ke=le(C,[["__scopeId","data-v-0f13d77e"]]);export{Ke as default};
+//# sourceMappingURL=Inventory-DN86NgZm.js.map
