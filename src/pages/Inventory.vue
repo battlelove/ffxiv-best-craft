@@ -13,6 +13,9 @@
 
         </div>
 
+        <!-- Crystal Quick Input -->
+        <CrystalInput />
+
         <!-- Inventory List -->
         <div class="section-card">
             <div class="header-row">
@@ -94,6 +97,7 @@ import { BetaXivApiRecipeSource, BetaXivapiBase } from '@/datasource/beta-xivapi
 import { Item } from '@/libs/Craft';
 
 import ItemSelector from '@/components/ItemSelector.vue';
+import CrystalInput from '@/components/CrystalInput.vue';
 
 const { $t } = useFluent();
 const inventoryStore = useInventoryStore();
