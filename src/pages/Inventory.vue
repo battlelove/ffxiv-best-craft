@@ -52,7 +52,14 @@
             <p class="hint-text">{{ $t('solver-hint') }}</p>
 
             <el-table v-if="solvedRecipes.length > 0" :data="solvedRecipes" style="width: 100%">
-                <el-table-column prop="name" :label="$t('recipe-name')" />
+                <el-table-column :label="$t('recipe-name')">
+                    <template #default="scope">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span>{{ scope.row.name }}</span>
+                            <el-tag v-if="scope.row.isGC" type="warning" size="small" effect="dark">GC</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column :label="$t('completeness')" width="180" sortable :sort-method="(a,b) => a.completeness - b.completeness">
                     <template #default="scope">
                         <el-progress 
@@ -111,12 +118,15 @@ const solvedRecipes = ref<SolvedRecipe[]>([]);
 // Using BetaXivApi explicitly for searching
 const xivApi = new BetaXivApiRecipeSource(BetaXivapiBase, 'zh'); // Force ZH for now or use settings
 
+import { isGrandCompanyItem } from '@/libs/GrandCompanySupply';
+
 interface SolvedRecipe {
     id: number;
     name: string;
     completeness: number; // 0-1
     maxCraftable: number;
     missing: { id: number, name: string, amount: number }[];
+    isGC?: boolean;
 }
 
 // Enhance inventory list with names (basic for now, ideally cache this)
@@ -387,7 +397,8 @@ async function runSolver() {
                        name: lr.name,
                        completeness: totalIngs > 0 ? presentIngs / totalIngs : 0,
                        maxCraftable: maxCraft,
-                       missing: missing
+                       missing: missing,
+                       isGC: isGrandCompanyItem(lr.resultItemId)
                    });
             }
         }

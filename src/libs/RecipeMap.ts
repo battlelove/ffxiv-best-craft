@@ -10,6 +10,8 @@ export interface LocalRecipe {
 
 // Map<IngredientItemID, LocalRecipe[]>
 const ingredientToRecipeMap = new Map<number, LocalRecipe[]>();
+// Map<ResultItemID, LocalRecipe[]>
+const resultToRecipeMap = new Map<number, LocalRecipe[]>();
 let isLoaded = false;
 
 function parseLine(line: string): string[] {
@@ -82,6 +84,13 @@ function loadRecipes() {
             }
             ingredientToRecipeMap.get(ing.id)?.push(recipe);
         }
+
+        // Index by Result Item
+        if (!resultToRecipeMap.has(resultId)) {
+            resultToRecipeMap.set(resultId, []);
+        }
+        resultToRecipeMap.get(resultId)?.push(recipe);
+
         count++;
     }
 
@@ -92,4 +101,9 @@ function loadRecipes() {
 export function findRecipesUsingItem(itemId: number): LocalRecipe[] {
     loadRecipes();
     return ingredientToRecipeMap.get(itemId) || [];
+}
+
+export function findRecipesByResultItem(itemId: number): LocalRecipe[] {
+    loadRecipes();
+    return resultToRecipeMap.get(itemId) || [];
 }

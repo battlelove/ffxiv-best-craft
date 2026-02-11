@@ -27,7 +27,8 @@ import {
     Menu,
     Money,
     Box,
-    Guide
+    Guide,
+    Stamp
 } from '@element-plus/icons-vue';
 import { useRouter } from 'vue-router';
 
@@ -78,6 +79,10 @@ const router = useRouter();
             <el-icon><Box /></el-icon>
             <span>{{ $t('inventory') }}</span>
         </el-menu-item>
+        <el-menu-item index="/grand-company">
+            <el-icon><Stamp /></el-icon>
+            <span>{{ $t('gc-supply') }}</span>
+        </el-menu-item>
         <el-menu-item index="/settings">
             <el-icon>
                 <setting />
@@ -108,6 +113,7 @@ simulator = 模拟器
 bom = 清单
 profit-calculator = 利润计算机
 inventory = 背包 / Solver
+gc-supply = 軍需品統計
 about = 关于
 settings = 设置清单
 
@@ -121,6 +127,7 @@ simulator = 模擬器
 bom = 清單
 profit-calculator = 利潤計算機
 inventory = 背包 / Solver
+gc-supply = 軍需品統計
 about = 關於
 settings = 設定清單
 
@@ -134,6 +141,7 @@ bom = BOM
 simulator = Simulator
 profit-calculator = Profit Cals
 inventory = Inventory
+gc-supply = GC Supply
 about = About
 settings = Settingstings
 

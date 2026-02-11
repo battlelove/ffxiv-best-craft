@@ -45,6 +45,7 @@ const router = createRouter({
         { path: '/bom', name: 'bom', component: BOMVue },
         { path: '/profit', name: 'profit', component: ProfitCalculator },
         { path: '/inventory', name: 'inventory', component: Inventory },
+        { path: '/grand-company', name: 'grand-company', component: () => import('@/pages/GrandCompany.vue') },
         { path: '/settings', name: 'settings', component: SettingsVue },
 
     ],
