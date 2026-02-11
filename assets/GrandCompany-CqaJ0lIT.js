@@ -1,0 +1,50 @@
+import"./web-source-Dj66yeNo.js";import"./main-BZRJ2zS3.js";import{E as V}from"./el-input-number-Dji0RCjk.js";import{E as c,a as z}from"./el-table-column-nB5GwDTC.js";import"./el-checkbox-BDb9Wvsy.js";import"./el-scrollbar-5w_V-esz.js";/* empty css               */import{y as q,aq as A,r as p,B as J,C as f,a7 as l,a1 as n,u as e,K as i,P as m,aa as g,M as b,an as k,ay as K}from"./_plugin-vue_export-helper-RInzzBDv.js";import{g as O}from"./GrandCompanySupply-BC0dE_Jt.js";import{findRecipesByResultItem as B}from"./RecipeMap-HxHkOn24.js";import{E as P}from"./index-CfwzTz0p.js";import{E as v}from"./index-C9KJT7fU.js";import{E as Q}from"./index-FQdLgifX.js";import"./gearsets-BAKrg7Eq.js";import"./use-form-item-BcsW_FLk.js";import"./merge-Dk1jFJMx.js";import"./_baseIteratee-w_JF_BKx.js";import"./_initCloneObject-BUf3qG1w.js";import"./raf-DsyXzqO4.js";import"./_baseSlice-F8doVSIJ.js";import"./index-CvgGaabb.js";const W={class:"grand-company-page"},$={class:"filter-card"},H={class:"filter-row"},X={class:"label"},Y={class:"hint-text"},Z={class:"content-row"},ee={class:"section-card half-width"},te={class:"section-card half-width"},ae={class:"hint-text"},_=q({__name:"GrandCompany",setup(o){const{$t:t}=A(),w=p(1),C=p(50),E=p(!1),h=p([]),I=p([]);async function M(){E.value=!0,h.value=[],I.value=[];try{const u=O(w.value,C.value),r=[],a=new Map;for(const s of u){let y=!1;if(s.id){const x=B(s.id);if(x.length>0){y=!0;const S=x[0],G=s.amount||1,L=Math.ceil(G/S.yield);for(const d of S.ingredients){const j=d.amount*L;if(!a.has(d.id)){const U=B(d.id);a.set(d.id,{id:d.id,name:d.name,amount:0,isSubCraft:U.length>0})}const F=a.get(d.id);F.amount+=j}}}r.push({...s,isCraftable:y})}h.value=r.filter(s=>s.isCraftable);const R=Array.from(a.values());I.value=R.filter(s=>s.isSubCraft).sort((s,y)=>y.amount-s.amount)}catch(u){console.error(u),Q.error("Calculation failed: "+String(u))}finally{E.value=!1}}return(u,r)=>(f(),J("div",W,[l("h2",null,n(e(t)("gc-supply-title")),1),l("div",$,[l("div",H,[l("span",X,n(e(t)("level-range"))+":",1),i(e(V),{modelValue:w.value,"onUpdate:modelValue":r[0]||(r[0]=a=>w.value=a),min:1,max:100,size:"small"},null,8,["modelValue"]),r[2]||(r[2]=l("span",{class:"separator"},"-",-1)),i(e(V),{modelValue:C.value,"onUpdate:modelValue":r[1]||(r[1]=a=>C.value=a),min:1,max:100,size:"small"},null,8,["modelValue"]),i(e(P),{type:"primary",onClick:M,loading:E.value,style:{"margin-left":"20px"}},{default:m(()=>[g(n(e(t)("calculate-demand")),1)]),_:1},8,["loading"])]),l("p",Y,n(e(t)("gc-hint")),1)]),l("div",Z,[l("div",ee,[l("h3",null,n(e(t)("gc-items-list"))+" ("+n(h.value.length)+")",1),i(e(z),{data:h.value,height:"500",style:{width:"100%"},stripe:""},{default:m(()=>[i(e(c),{prop:"level",label:"Lv",width:"60",sortable:""}),i(e(c),{prop:"job",label:e(t)("job"),width:"80",sortable:""},null,8,["label"]),i(e(c),{prop:"nameTC",label:e(t)("item-name")},null,8,["label"]),i(e(c),{label:e(t)("status"),width:"100",align:"center"},{default:m(a=>[a.row.isCraftable?(f(),b(e(v),{key:0,type:"success",size:"small"},{default:m(()=>[g(n(e(t)("craftable")),1)]),_:1})):(f(),b(e(v),{key:1,type:"info",size:"small"},{default:m(()=>[g(n(e(t)("gathering-or-other")),1)]),_:1}))]),_:1},8,["label"])]),_:1},8,["data"])]),l("div",te,[l("h3",null,n(e(t)("material-demand-stats")),1),l("p",ae,n(e(t)("material-demand-hint")),1),i(e(z),{data:I.value,height:"500",style:{width:"100%"},stripe:""},{default:m(()=>[i(e(c),{prop:"name",label:e(t)("material-name")},null,8,["label"]),i(e(c),{prop:"amount",label:e(t)("total-demand"),width:"120",sortable:""},null,8,["label"]),i(e(c),{label:e(t)("type"),width:"100"},{default:m(a=>[a.row.isSubCraft?(f(),b(e(v),{key:0,type:"warning",size:"small"},{default:m(()=>[g(n(e(t)("intermediate")),1)]),_:1})):(f(),b(e(v),{key:1,type:"info",size:"small"},{default:m(()=>[g(n(e(t)("raw")),1)]),_:1}))]),_:1},8,["label"])]),_:1},8,["data"])])])]))}});function N(o){const t=o.options||o;t.fluent=t.fluent||{},t.fluent["zh-CN"]=new k(`gc-supply-title = 军需品需求统计
+level-range = 等级范围
+calculate-demand = 计算需求
+gc-hint = 筛选指定等级范围的军需品，并统计所需的半成品数量。
+gc-items-list = 军需品清单 (可制作)
+job = 职业
+item-name = 物品名称
+status = 状态
+craftable = 可制作
+gathering-or-other = 采集/其他
+material-demand-stats = 半成品需求统计
+material-demand-hint = 仅显示需制作的半成品材料，按需求量排序。
+material-name = 材料名称
+total-demand = 总需求
+type = 类型
+intermediate = 半成品
+raw = 原材料`)}function T(o){const t=o.options||o;t.fluent=t.fluent||{},t.fluent["zh-TW"]=new k(`gc-supply-title = 軍需品需求統計
+level-range = 等級範圍
+calculate-demand = 計算需求
+gc-hint = 篩選指定等級範圍的軍需品，並統計所需的半成品數量。
+gc-items-list = 軍需品清單 (可製作)
+job = 職業
+item-name = 物品名稱
+status = 狀態
+craftable = 可製作
+gathering-or-other = 採集/其他
+material-demand-stats = 半成品需求統計
+material-demand-hint = 僅顯示需製作的半成品材料，按需求量排序。
+material-name = 材料名稱
+total-demand = 總需求
+type = 類型
+intermediate = 半成品
+raw = 原材料`)}function D(o){const t=o.options||o;t.fluent=t.fluent||{},t.fluent["en-US"]=new k(`gc-supply-title = Grand Company Supply Demand
+level-range = Level Range
+calculate-demand = Calculate
+gc-hint = Filter supply items by level and calculate material demand.
+gc-items-list = Supply Items (Craftable)
+job = Job
+item-name = Item Name
+status = Status
+craftable = Craftable
+gathering-or-other = Gathering/Other
+material-demand-stats = Intermediate Material Demand
+material-demand-hint = Showing only craftable intermediate materials, sorted by demand.
+material-name = Material Name
+total-demand = Total Demand
+type = Type
+intermediate = Intermediate
+raw = Raw`)}typeof N=="function"&&N(_);typeof T=="function"&&T(_);typeof D=="function"&&D(_);const Ie=K(_,[["__scopeId","data-v-f9dbf412"]]);export{Ie as default};
+//# sourceMappingURL=GrandCompany-CqaJ0lIT.js.map
