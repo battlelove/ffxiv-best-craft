@@ -74,7 +74,21 @@
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <span>{{ scope.row.name }}</span>
                             <el-tag v-if="scope.row.isGC" type="warning" size="small" effect="dark">GC</el-tag>
+                            <el-tooltip :content="$t('copy-name')" placement="top">
+                                <el-button
+                                    :icon="CopyDocument"
+                                    size="small"
+                                    link
+                                    @click="copyName(scope.row.name)"
+                                />
+                            </el-tooltip>
                         </div>
+                    </template>
+                </el-table-column>
+                <el-table-column :label="$t('gc-required-level')" width="110" align="center">
+                    <template #default="scope">
+                        <span v-if="scope.row.gcLevel != null">Lv. {{ scope.row.gcLevel }}</span>
+                        <span v-else class="muted-text">—</span>
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('completeness')" width="180" sortable :sort-method="(a,b) => a.completeness - b.completeness">
@@ -88,10 +102,19 @@
                 <el-table-column :label="$t('max-craftable')" width="120" align="center" prop="maxCraftable" />
                 <el-table-column :label="$t('missing-materials')">
                     <template #default="scope">
-                        <div v-if="scope.row.missing.length === 0" class="success-text">{{ $t('ready-to-craft') }}</div>
+                        <div v-if="nonCrystalMissing(scope.row.missing).length === 0" class="success-text">{{ $t('ready-to-craft') }}</div>
                         <div v-else class="missing-list">
-                            <span v-for="m in scope.row.missing" :key="m.id" class="missing-item">
+                            <span v-for="m in nonCrystalMissing(scope.row.missing)" :key="m.id" class="missing-item">
                                 {{ m.name }} x{{ m.amount }}
+                                <el-tooltip :content="$t('copy-name')" placement="top">
+                                    <el-button
+                                        :icon="CopyDocument"
+                                        size="small"
+                                        link
+                                        class="missing-copy-btn"
+                                        @click="copyName(m.name)"
+                                    />
+                                </el-tooltip>
                             </span>
                         </div>
                     </template>
@@ -136,7 +159,7 @@ const onlyGC = ref(false);
 // Using BetaXivApi explicitly for searching
 const xivApi = new BetaXivApiRecipeSource(BetaXivapiBase, 'zh'); // Force ZH for now or use settings
 
-import { isGrandCompanyItem } from '@/libs/GrandCompanySupply';
+import { isGrandCompanyItem, getGrandCompanyItem } from '@/libs/GrandCompanySupply';
 
 interface SolvedRecipe {
     id: number;
@@ -145,6 +168,7 @@ interface SolvedRecipe {
     maxCraftable: number;
     missing: { id: number, name: string, amount: number }[];
     isGC?: boolean;
+    gcLevel?: number;
 }
 
 // Enhance inventory list with names (basic for now, ideally cache this)
@@ -301,6 +325,20 @@ async function searchItems(page: number, query: string): Promise<{ results: any[
         }
     }
     
+    // Sort: exact match first, then starts-with, then rest by ID
+    const q = query.trim();
+    finalResults.sort((a, b) => {
+        const aExact = a.name === q;
+        const bExact = b.name === q;
+        if (aExact !== bExact) return aExact ? -1 : 1;
+
+        const aStarts = a.name.startsWith(q);
+        const bStarts = b.name.startsWith(q);
+        if (aStarts !== bStarts) return aStarts ? -1 : 1;
+
+        return a.id - b.id;
+    });
+
     // Pagination Logic Fix
     let calcTotalPages = page;
     if (cafeRes.length >= 20 || recipeRes.length >= 20 || localRes.length >= 50) {
@@ -311,6 +349,10 @@ async function searchItems(page: number, query: string): Promise<{ results: any[
         results: finalResults,
         totalPages: calcTotalPages 
     };
+}
+
+function nonCrystalMissing(missing: { id: number; name: string; amount: number }[]) {
+    return missing.filter(m => !(m.id >= 2 && m.id <= 19));
 }
 
 async function copyName(name: string) {
@@ -419,13 +461,15 @@ async function runSolver() {
                        totalIngs++;
                    }
                    
+                   const gcItem = getGrandCompanyItem(lr.resultItemId);
                    candidates.set(lr.resultItemId, {
                        id: lr.resultItemId,
                        name: lr.name,
                        completeness: totalIngs > 0 ? presentIngs / totalIngs : 0,
                        maxCraftable: maxCraft,
                        missing: missing,
-                       isGC: isGrandCompanyItem(lr.resultItemId)
+                       isGC: !!gcItem,
+                       gcLevel: gcItem?.level,
                    });
             }
         }
@@ -491,6 +535,18 @@ async function runSolver() {
 .missing-item {
     font-size: 0.85em;
     color: var(--el-color-danger);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.missing-copy-btn {
+    color: var(--el-color-danger);
+    opacity: 0.6;
+    padding: 0;
+    height: auto;
+}
+.missing-copy-btn:hover {
+    opacity: 1;
 }
 .success-text {
     color: var(--el-color-success);
@@ -500,6 +556,9 @@ async function runSolver() {
     font-size: 0.9em;
     color: var(--el-text-color-secondary);
     margin-bottom: 10px;
+}
+.muted-text {
+    color: var(--el-text-color-placeholder);
 }
 </style>
 
@@ -526,6 +585,7 @@ copy-name = 复制名称
 copy-success = 已复制！
 copy-failed = 复制失败
 only-gc = 只分析军需品
+gc-required-level = 需求等级
 </fluent>
 
 <fluent locale="zh-TW">
@@ -551,6 +611,7 @@ copy-name = 複製名稱
 copy-success = 已複製！
 copy-failed = 複製失敗
 only-gc = 只分析軍需品
+gc-required-level = 需求等級
 </fluent>
 
 <fluent locale="en-US">
@@ -576,6 +637,7 @@ copy-name = Copy Name
 copy-success = Copied!
 copy-failed = Copy failed
 only-gc = GC Items Only
+gc-required-level = Required Level
 </fluent>
 
 <fluent locale="ja-JP">
@@ -601,4 +663,5 @@ copy-name = 名前をコピー
 copy-success = コピーしました！
 copy-failed = コピー失敗
 only-gc = 軍需品のみ分析
+gc-required-level = 必要レベル
 </fluent>
