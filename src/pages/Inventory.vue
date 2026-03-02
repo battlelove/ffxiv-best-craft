@@ -24,7 +24,21 @@
             </div>
             
             <el-table :data="inventoryListWithInfo" style="width: 100%" max-height="400">
-                <el-table-column prop="name" :label="$t('item-name')" />
+                <el-table-column :label="$t('item-name')">
+                    <template #default="scope">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span>{{ scope.row.name }}</span>
+                            <el-tooltip :content="$t('copy-name')" placement="top">
+                                <el-button
+                                    :icon="CopyDocument"
+                                    size="small"
+                                    link
+                                    @click="copyName(scope.row.name)"
+                                />
+                            </el-tooltip>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column :label="$t('quantity')" width="200">
                     <template #default="scope">
                         <el-input-number 
@@ -47,7 +61,10 @@
         <div class="section-card solver-section">
             <div class="header-row">
                 <h3>{{ $t('crafting-solver') }}</h3>
-                <el-button type="success" @click="runSolver" :loading="solving">{{ $t('analyze-recipes') }}</el-button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <el-checkbox v-model="onlyGC">{{ $t('only-gc') }}</el-checkbox>
+                    <el-button type="success" @click="runSolver" :loading="solving">{{ $t('analyze-recipes') }}</el-button>
+                </div>
             </div>
             <p class="hint-text">{{ $t('solver-hint') }}</p>
 
@@ -94,9 +111,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { 
-    ElInput, ElButton, ElTag, ElTable, ElTableColumn, ElInputNumber, ElIcon, ElProgress, ElMessage 
+    ElInput, ElButton, ElTag, ElTable, ElTableColumn, ElInputNumber, ElIcon, ElProgress, ElMessage, ElTooltip, ElCheckbox
 } from 'element-plus';
-import { Search, Plus, Delete } from '@element-plus/icons-vue';
+import { Search, Plus, Delete, CopyDocument } from '@element-plus/icons-vue';
 import { useFluent } from 'fluent-vue';
 import useInventoryStore from '@/stores/inventory';
 import useSettingsStore from '@/stores/settings';
@@ -114,6 +131,7 @@ const showItemSelector = ref(false);
 
 const solving = ref(false);
 const solvedRecipes = ref<SolvedRecipe[]>([]);
+const onlyGC = ref(false);
 
 // Using BetaXivApi explicitly for searching
 const xivApi = new BetaXivApiRecipeSource(BetaXivapiBase, 'zh'); // Force ZH for now or use settings
@@ -295,6 +313,15 @@ async function searchItems(page: number, query: string): Promise<{ results: any[
     };
 }
 
+async function copyName(name: string) {
+    try {
+        await navigator.clipboard.writeText(name);
+        ElMessage.success($t('copy-success'));
+    } catch {
+        ElMessage.error($t('copy-failed'));
+    }
+}
+
 function handleItemSelect(item: { id: number; name: string }) {
     inventoryStore.addItem(item.id, 1);
     inventoryItemDetails.value.set(item.id, item.name);
@@ -406,6 +433,7 @@ async function runSolver() {
         // Sort: 100% complete first, then descending
         solvedRecipes.value = Array.from(candidates.values())
             .filter(r => r.completeness > 0.1) // Filter very low relevance
+            .filter(r => !onlyGC.value || r.isGC)
             .sort((a, b) => b.completeness - a.completeness);
 
     } catch (e) {
@@ -494,6 +522,10 @@ missing-materials = 缺少的素材
 ready-to-craft = 素材齐备！
 inventory-empty = 背包是空的，请先添加素材。
 solver-error = 分析失败
+copy-name = 复制名称
+copy-success = 已复制！
+copy-failed = 复制失败
+only-gc = 只分析军需品
 </fluent>
 
 <fluent locale="zh-TW">
@@ -515,6 +547,10 @@ missing-materials = 缺少素材
 ready-to-craft = 素材齊全！
 inventory-empty = 背包是空的，請先新增素材。
 solver-error = 分析失敗
+copy-name = 複製名稱
+copy-success = 已複製！
+copy-failed = 複製失敗
+only-gc = 只分析軍需品
 </fluent>
 
 <fluent locale="en-US">
@@ -536,6 +572,10 @@ missing-materials = Missing Materials
 ready-to-craft = Ready to Craft!
 inventory-empty = Inventory is empty.
 solver-error = Analysis Failed
+copy-name = Copy Name
+copy-success = Copied!
+copy-failed = Copy failed
+only-gc = GC Items Only
 </fluent>
 
 <fluent locale="ja-JP">
@@ -557,4 +597,8 @@ missing-materials = 不足素材
 ready-to-craft = 製作可能！
 inventory-empty = 所持品が空です。
 solver-error = 分析失敗
+copy-name = 名前をコピー
+copy-success = コピーしました！
+copy-failed = コピー失敗
+only-gc = 軍需品のみ分析
 </fluent>
