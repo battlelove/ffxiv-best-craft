@@ -10,9 +10,17 @@
             <el-input
                 v-model="searchQuery"
                 :placeholder="$t('search-item-placeholder')"
-                style="width: 300px; margin-right: 10px"
                 @keyup.enter="handleSearch"
                 clearable
+            />
+            <el-input-number
+                v-if="showQuantityInput"
+                v-model="quantity"
+                :min="1"
+                :step="1"
+                :precision="0"
+                :controls="false"
+                class="quantity-input"
             />
             <el-button type="primary" @click="handleSearch" :loading="loading">{{ $t('search') }}</el-button>
         </div>
@@ -60,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { 
     ElDialog, 
     ElInput, 
@@ -69,7 +77,8 @@ import {
     ElTableColumn, 
     ElIcon,
     ElPagination,
-    ElMessage
+    ElMessage,
+    ElInputNumber
 } from 'element-plus';
 import { Goods } from '@element-plus/icons-vue';
 import { useFluent } from 'fluent-vue';
@@ -83,6 +92,7 @@ interface ItemSelectorProps {
     initialQuery?: string;
     title?: string;
     mode?: 'recipe' | 'item'; 
+    allowQuantity?: boolean;
     customSearch?: (page: number, query: string) => Promise<{ results: any[], totalPages: number }>;
 }
 
@@ -90,7 +100,7 @@ const props = defineProps<ItemSelectorProps>();
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: boolean): void;
-    (e: 'select', item: { id: number; name: string; recipeId: number }): void;
+    (e: 'select', item: { id: number; name: string; recipeId: number; amount?: number }): void;
 }>();
 
 const visible = ref(false);
@@ -100,6 +110,8 @@ const results = ref<any[]>([]);
 const total = ref(0);
 const pageSize = 10;
 const currentPage = ref(1);
+const quantity = ref<number | undefined>(1);
+const showQuantityInput = computed(() => props.mode === 'item' && props.allowQuantity);
 
 // Sync modelValue with visible
 watch(() => props.modelValue, (val) => {
@@ -171,7 +183,12 @@ async function fetchResults() {
 function handleSelect(row: any) {
     if (props.mode === 'item') {
         // Row is Item: { id, name, ... }
-        emit('select', { id: row.id, name: row.name, recipeId: 0 });
+        emit('select', {
+            id: row.id,
+            name: row.name,
+            recipeId: 0,
+            amount: Math.max(1, Number(quantity.value) || 1),
+        });
     } else {
         // Row is Recipe: { id, item_id, item_name ... }
         emit('select', { id: row.item_id, name: row.name, recipeId: row.id });
@@ -188,8 +205,16 @@ function handleClose() {
 <style scoped>
 .search-bar {
     display: flex;
+    align-items: center;
     justify-content: center;
+    gap: 10px;
     margin-bottom: 10px;
+}
+.search-bar > .el-input {
+    width: 300px;
+}
+.quantity-input {
+    width: 110px;
 }
 .pagination-container {
     display: flex;

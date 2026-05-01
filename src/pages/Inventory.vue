@@ -125,6 +125,7 @@
             v-model="showItemSelector" 
             :title="$t('select-item')"
             mode="item"
+            allow-quantity
             :custom-search="searchItems"
             @select="handleItemSelect"
         />
@@ -364,8 +365,8 @@ async function copyName(name: string) {
     }
 }
 
-function handleItemSelect(item: { id: number; name: string }) {
-    inventoryStore.addItem(item.id, 1);
+function handleItemSelect(item: { id: number; name: string; amount?: number }) {
+    inventoryStore.addItem(item.id, item.amount || 1);
     inventoryItemDetails.value.set(item.id, item.name);
 }
 
